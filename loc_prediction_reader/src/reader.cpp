@@ -234,11 +234,11 @@ void findNearPoints(){
     // Set the scale of the marker -- 1x1x1 here means 1m on a side
     marker.scale.x = 0.05;
     marker.scale.y = 0.05;
-    marker.scale.z = 0.05;
+    marker.scale.z = 0.01;
     
     markerCent.scale.x = 0.05;
     markerCent.scale.y = 0.05;
-    markerCent.scale.z = 0.05;
+    markerCent.scale.z = 0.01;
 
     // Set the color -- be sure to set alpha to something non-zero!
     marker.color.r = 0.0f;
@@ -264,15 +264,15 @@ void findNearPoints(){
        for(int j = 0; j < global_centroids_position.size() ; ++j  ){
            float maha = mahalanobisDistance(global_position.at(i),global_clusterVector.at(j));
            dist << "Mahalanobis Distance\t\t" << maha << std::endl;
-        if (maha<1.2){
+        if (maha<1.5){
             
             //CalculateEuclideanDistance(global_position.at(i), global_centroids_position.at(j))< 0.05){  // EuclideanDistance
             std::stringstream g ;
             g << j ;
             
             pairs.push_back(std::make_pair(i,j));
-            
-             markerCent.id = yID;
+             marker.scale.z = 0.01;
+             marker.id = yID;
             // numero del centroide
             marker.pose.position.x = global_centroids_position.at(j).x;//
             marker.pose.position.y = global_centroids_position.at(j).y;//
@@ -357,16 +357,16 @@ void findNearPoints(){
     //.first-> index del Label 
     //.second-> index del centroide
     
- int idCount =0;   
+ int idCount = yID+1;   
  
- markerCent.color.r=0;
- markerCent.color.b=0;
- markerCent.color.g=1;
+ markerCent.color.r=143;
+ markerCent.color.b=143;
+ markerCent.color.g=143;
  
- markerCent.scale.z = 0.05;
+ markerCent.scale.z = 0.01;
  
  for(int h = 0; h < global_centroids_position.size(); ++h){
-   
+    
      std::stringstream tagList;
      tagList << h;
     
@@ -405,10 +405,10 @@ void findNearPoints(){
    std_msgs::String resultsTopic;
    resultsTopic.data = ss.str();
 
-   pub_reader_results.publish(resultsTopic);
+   //pub_reader_results.publish(resultsTopic);
 
-
-   //std::cout << dist.str();
+   //Imprimir Mahalanobis Distance Values
+// std::cout << dist.str();
       //-------------------Makers------------------------
    ros::shutdown();
 }
@@ -586,9 +586,9 @@ int main (int argc, char** argv)
   pub_rviz = nh_ptr_->advertise<sensor_msgs::PointCloud2>("/cloud_processed",1);
   vis_cent_pub = nh_ptr_->advertise<visualization_msgs::Marker>( "cent_marker", 0 );
   vis_tag_pub = nh_ptr_->advertise<visualization_msgs::Marker>( "tag_marker", 0 );
-  tag_pub  = nh_ptr_->advertise<sensor_msgs::PointCloud2>("/tags_location",1);
-  pub_cluster_rviz = nh_ptr_->advertise<sensor_msgs::PointCloud2>("/clusters_processed",1);
-  pub_reader_results= nh_ptr_->advertise<std_msgs::String>("/cluster_tag_location",1);
+  tag_pub  = nh_ptr_->advertise<sensor_msgs::PointCloud2>("/tags_location",0);
+  pub_cluster_rviz = nh_ptr_->advertise<sensor_msgs::PointCloud2>("/clusters_processed",0);
+  pub_reader_results= nh_ptr_->advertise<std_msgs::String>("/cluster_tag_location",0);
  
   
 

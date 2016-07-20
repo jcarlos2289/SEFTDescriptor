@@ -1,6 +1,6 @@
 <launch>
 
-  <node pkg="cloud_clusterer" type="cloud_clusterer" name="cloud_clusterer">
+  <node pkg="cloud_clusterer" type="cloud_clusterer" name="cloud_clusterer" output="screen">
   </node>
    <node pkg="loc_prediction_reader" type="reader" name="msg_reader" output="screen">
   </node>
